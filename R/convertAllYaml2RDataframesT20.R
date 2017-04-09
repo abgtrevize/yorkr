@@ -62,6 +62,22 @@ convertAllYaml2RDataframesT20 <- function(sourceDir=".",targetDir="."){
         # Load yaml file
         a <- yaml.load_file(pth)
 
+        # Relabel 10th delivery in over with more than 9 deliveries
+        for (i in 2:length(a$innings[[1]]$`1st innings`$deliveries)) {
+          if (grepl(".9",names(a$innings[[1]]$`1st innings`$deliveries[[i-1]]))) {
+            names(a$innings[[1]]$`1st innings`$deliveries[[i]])=
+              gsub(".1",".10",names(a$innings[[1]]$`1st innings`$deliveries[[i]]))
+          } 
+          else { next }
+        }
+        for (i in 2:length(a$innings[[2]]$`2nd innings`$deliveries)) {
+          if (grepl(".9",names(a$innings[[2]]$`2nd innings`$deliveries[[i-1]]))) {
+            names(a$innings[[2]]$`2nd innings`$deliveries[[i]])=
+              gsub(".1",".10",names(a$innings[[2]]$`2nd innings`$deliveries[[i]]))
+          } 
+          else { next }
+        }
+        
         # Cast as data frame for easy processing
         #b <- as.data.frame(a)
 
